@@ -9,6 +9,8 @@ Features:
 - Infinite scroll
   - Via `react-infinite-scroll-component`
 - Lazy-loading of images
+- Lightbox Photo Viewer
+  - Via `photoswipe`
 - Build-time thumbnail generation
   - Via `sharp`
 
