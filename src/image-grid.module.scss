@@ -1,0 +1,24 @@
+.my-masonry-grid {
+  display: flex;
+  margin-left: -10px;
+  /* gutter size offset */
+  width: auto;
+}
+
+.my-masonry-grid_column {
+  padding-left: 10px;
+  /* gutter size */
+  background-clip: padding-box;
+}
+
+/* Style your items */
+.my-masonry-grid_column>div {
+  /* change div to reference your elements you put in <Masonry> */
+  margin-bottom: 10px;
+}
+
+.endMessage {
+  text-align: center;
+  font-style: italic;
+  opacity: 0.4;
+}

@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "moduleResolution": "node",
+    "checkJs": true,
+    "module": "umd",
+    "skipLibCheck": true,
+    "outDir": "types",
+    "target": "ES6",
+    "jsx": "preserve",
+    "rootDir": "./src"
+  },
+  "include": [
+    "src/*",
+    "plugin.js"
+  ],
+  "exclude": ["node_modules/**"]
+}

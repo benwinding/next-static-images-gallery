@@ -1,0 +1,47 @@
+.imageCard {
+  padding: 0;
+  border-radius: 0.5rem;
+  color: black;
+}
+
+@media (min-width: 640px) {
+  .imageCard {
+    padding: 0.25rem;
+  }
+}
+
+.img {
+  border-radius: 0.25rem;
+  width: 100%;
+}
+
+.img:hover {
+  background-color: grey;
+}
+
+.h0 {
+  height: 0;
+}
+
+.errorPlaceholder {
+  width: 100%;
+  background-color: #DDDDD5;
+}
+
+.loadingPlaceholder {
+  width: 100%;
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  background-color: #B6C1B8;
+}
+
+@keyframes pulse {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+}
