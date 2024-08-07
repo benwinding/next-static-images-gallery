@@ -44,6 +44,7 @@ function withStaticImagesGallery(nextConfig, galleryOptions) {
       // Add custom webpack configurations here
       config.module.rules.push({
         test: /\.(js|jsx)$/,
+        include: /next-static-images-gallery/,
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
