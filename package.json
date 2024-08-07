@@ -20,8 +20,8 @@
     "react-masonry-css": "^1.0.16"
   },
   "peerDependencies": {
-    "next": ">14",
-    "react": "18.x"
+    "next": ">12",
+    "react": ">17"
   },
   "devDependencies": {
     "@types/fs-extra": "^11.0.4",
