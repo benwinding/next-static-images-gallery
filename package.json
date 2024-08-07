@@ -7,7 +7,7 @@
   "types": "./types",
   "license": "MIT",
   "scripts": {
-    "build": "webpack --mode production"
+    "build": "tsc"
   },
   "dependencies": {
     "@babel/core": "^7.25.2",
