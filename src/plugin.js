@@ -45,7 +45,6 @@ function withStaticImagesGallery(nextConfig, galleryOptions) {
       config.module.rules.push({
         test: /\.(js|jsx)$/,
         include: /next-static-images-gallery/,
-        exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
           options: {
