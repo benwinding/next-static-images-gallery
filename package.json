@@ -21,8 +21,8 @@
     "sharp": "^0.33.4"
   },
   "peerDependencies": {
-    "next": ">12",
-    "react": ">17"
+    "next": ">=12",
+    "react": ">=17"
   },
   "devDependencies": {
     "@types/fs-extra": "^11.0.4",
