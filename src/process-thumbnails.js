@@ -91,6 +91,7 @@ function removePrefix(str, prefix) {
 async function generateThumbnail(sourcePath, outputPath, width) {
   try {
     await sharp(sourcePath)
+      .rotate()
       .resize({ width })
       .toFile(outputPath);
   } catch (error) {
