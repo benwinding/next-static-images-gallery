@@ -17,37 +17,46 @@ import styles from "./image-grid.module.scss";
  * @property {ImageGalleryItem[]} images - An array of image gallery items.
  */
 
-const BREAKPOINTS = {
+/**
+ * @typedef {{
+ *   [width: number]: number,
+ *   default: number,
+ * }} BreakPointsObject
+ */
+const DEFAULT_BREAKPOINTS = {
   350: 1,
   700: 2,
   1050: 3,
   1400: 4,
   1750: 5,
   2100: 6,
+  default: 7,
 };
-const DEFAULT_BREAKPOINT = 7;
 
-function getChunkSize() {
+/**
+ * @param {BreakPointsObject} breakPoints
+ * @param {number} defaultBreakpoint
+ */
+function getChunkSize(breakPoints, defaultBreakpoint) {
   if (global.window == null) {
     return 12;
   }
   const windowWidth = global.window.innerWidth;
-  for (const [key, val] of Object.entries(BREAKPOINTS)) {
+  for (const [key, val] of Object.entries(breakPoints)) {
     const breakPointWidth = Number(key);
     const breakPointVal = Number(val) * 4;
     if (breakPointWidth > windowWidth) {
       return breakPointVal;
     }
   }
-  return DEFAULT_BREAKPOINT * 4;
+  return defaultBreakpoint * 4;
 }
-
-const chunkSize = getChunkSize();
 
 /**
  * @param {{ 
  *   images: ImageGalleryItem[],
  *   endMessage?: React.ReactNode,
+ *   breakPoints?: BreakPointsObject,
  * }} props - The properties for the ImageGrid component.
  */
 export function ImageGrid(props) {
@@ -57,11 +66,16 @@ export function ImageGrid(props) {
   const [imagesLoadedUrls, setImagesLoadedUrls] = useState([]);
   const hasMore = props.images.length > imagesLoadedUrls.length;
 
+  const breakPoints = props.breakPoints || DEFAULT_BREAKPOINTS;
+  const defaultBreakpoint = breakPoints.default || Object.values(breakPoints).pop() + 1;
+  const chunkSize = getChunkSize(breakPoints, defaultBreakpoint);
+
   useEffect(() => {
     console.log(`loading first "${chunkSize}", out of ${props.images.length} images`);
     setImagesLoadedUrls(props.images.slice(0, chunkSize).map(img => img.urlFull));
     init();
-  }, [props.images]);
+    return () => destroy();
+  }, [props.images, breakPoints]);
 
   const loadNext = () => {
     const lastIndex = imagesLoadedUrls.length - 1;
@@ -80,6 +94,7 @@ export function ImageGrid(props) {
         <MyMasonryLayout
           imageUrlsLoaded={imagesLoadedUrls}
           images={props.images}
+          breakPoints={breakPoints}
         />
       </MyInfiniteScroll>
     </div>
@@ -122,6 +137,7 @@ function MyInfiniteScroll(props) {
  * @typedef {Object} MyMasonryLayoutProps
  * @property {ImageGalleryItem[]} images - An array of image gallery items.
  * @property {string[]} imageUrlsLoaded - An array of image URLs that have been loaded.
+ * @property {BreakPointsObject} breakPoints - The breakpoints object for the masonry layout.
  */
 
 /**
@@ -130,11 +146,11 @@ function MyInfiniteScroll(props) {
 function MyMasonryLayout(props) {
   return (
     <Masonry
-      breakpointCols={{ ...BREAKPOINTS, default: DEFAULT_BREAKPOINT }}
+      breakpointCols={{ ...props.breakPoints }}
       className={styles["my-masonry-grid"]}
       columnClassName={styles["my-masonry-grid_column"]}
     >
-      {props.images.map((image, index) => (
+      {props.images.map((image) => (
         <div key={image.urlFull} hidden={!props.imageUrlsLoaded.includes(image.urlFull)}>
           <ImageCard
             urlFull={image.urlFull}
@@ -168,4 +184,8 @@ const lightbox = new PhotoSwipeLightbox({
 
 function init() {
   lightbox.init();
+}
+
+function destroy() {
+  lightbox.destroy();
 }
