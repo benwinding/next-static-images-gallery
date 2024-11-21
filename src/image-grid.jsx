@@ -45,7 +45,10 @@ function getChunkSize() {
 const chunkSize = getChunkSize();
 
 /**
- * @param {{ images: ImageGalleryItem[] }} props - The properties for the ImageGrid component.
+ * @param {{ 
+ *   images: ImageGalleryItem[],
+ *   endMessage: React.ReactNode,
+ * }} props - The properties for the ImageGrid component.
  */
 export function ImageGrid(props) {
   /** 
@@ -70,6 +73,7 @@ export function ImageGrid(props) {
     <div>
       <MyInfiniteScroll
         dataLength={imagesLoadedUrls.length}
+        endMessage={props.endMessage}
         loadNext={loadNext}
         hasMore={hasMore}
       >
@@ -89,6 +93,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 /**
  * @typedef {Object} MyInfiniteScrollProps
  * @property {React.ReactNode} children - The children elements to render inside the infinite scroll component.
+ * @property {React.ReactNode} endMessage - The message shown when the entire gallery has been shown.
  * @property {number} dataLength - The current length of the data.
  * @property {boolean} hasMore - Indicates if there are more items to load.
  * @property {() => any} loadNext - The function to call to load the next set of items.
@@ -104,7 +109,7 @@ function MyInfiniteScroll(props) {
       next={props.loadNext}
       hasMore={props.hasMore}
       loader={<h4>Loading images...</h4>}
-      endMessage={<p className={styles.endMessage}>All images loaded :)</p>}
+      endMessage={props.endMessage || <p className={styles.endMessage}>All images loaded :)</p>}
     >
       {props.children}
     </InfiniteScroll>
