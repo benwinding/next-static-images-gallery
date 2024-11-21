@@ -47,7 +47,7 @@ const chunkSize = getChunkSize();
 /**
  * @param {{ 
  *   images: ImageGalleryItem[],
- *   endMessage: React.ReactNode,
+ *   endMessage?: React.ReactNode,
  * }} props - The properties for the ImageGrid component.
  */
 export function ImageGrid(props) {
