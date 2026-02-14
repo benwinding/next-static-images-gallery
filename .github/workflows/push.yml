@@ -26,8 +26,12 @@ jobs:
       run: npm install
     - name: Build types
       run: npm run build
-    - name: Deploy to NPM! 🚀
-      uses: Github-Actions-Community/merge-release@master
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+    - name: Sync version from npm
+      run: |
+        PUBLISHED_VERSION=$(npm view next-static-images-gallery version)
+        echo "Published version: $PUBLISHED_VERSION"
+        npm pkg set version=$PUBLISHED_VERSION
+    - name: Bump patch version
+      run: npm version patch --no-git-tag-version
+    - name: Publish to npm
+      run: npm publish
