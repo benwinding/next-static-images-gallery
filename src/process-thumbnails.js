@@ -20,6 +20,7 @@ module.exports = {
  * @property {string} inputDir - The input directory for images.
  * @property {string} outputDir - The output directory for processed images.
  * @property {number} thumbnailWidth - The width of the thumbnail images.
+ * @property {string} [exportPublicRootPath] - Optional path prefix for exported URLs.
  */
 
 /**
@@ -31,8 +32,9 @@ async function processImages(opts) {
   const INPUT_DIR = path.join(PUBLIC_DIR, opts.inputDir);
   const OUTPUT_DIR = path.join(PUBLIC_DIR, opts.outputDir);
   const THUMBNAIL_WIDTH = opts.thumbnailWidth;
+  const EXPORT_PUBLIC_ROOT = normalizeExportPublicRootPath(opts.exportPublicRootPath);
 
-  console.log("___ processImages begin", { PUBLIC_DIR, INPUT_DIR, OUTPUT_DIR, THUMBNAIL_WIDTH });
+  console.log("___ processImages begin", { PUBLIC_DIR, INPUT_DIR, OUTPUT_DIR, THUMBNAIL_WIDTH, EXPORT_PUBLIC_ROOT });
 
   await fs.ensureDir(OUTPUT_DIR);
 
@@ -52,11 +54,13 @@ async function processImages(opts) {
       getImageMeta(sourcePath),
       generateThumbnail(sourcePath, outputPath, THUMBNAIL_WIDTH),
     ]);
+    const relativeThumbPath = removePrefix(outputPath, PUBLIC_DIR);
+    const relativeFullPath = removePrefix(sourcePath, PUBLIC_DIR);
     galleryImages.push({
       width: meta.width,
       height: meta.height,
-      urlThumb: removePrefix(outputPath, PUBLIC_DIR),
-      urlFull: removePrefix(sourcePath, PUBLIC_DIR),
+      urlThumb: buildExportUrl(EXPORT_PUBLIC_ROOT, relativeThumbPath),
+      urlFull: buildExportUrl(EXPORT_PUBLIC_ROOT, relativeFullPath),
     });
   }));
   const galleryJsonPath = path.join(OUTPUT_DIR, "gallery.json");
@@ -78,6 +82,35 @@ function removePrefix(str, prefix) {
     return str.substring(prefix.length);
   }
   return str; // return the original string if the prefix does not match
+}
+
+/**
+ * @param {string | undefined} exportPublicRootPath
+ * @returns {string | null}
+ */
+function normalizeExportPublicRootPath(exportPublicRootPath) {
+  if (exportPublicRootPath == null) {
+    return null;
+  }
+  const trimmed = exportPublicRootPath.trim();
+  if (!trimmed) {
+    return null;
+  }
+  const withLeadingSlash = trimmed.startsWith("/") ? trimmed : `/${trimmed}`;
+  return withLeadingSlash.replace(/\/+$/, "");
+}
+
+/**
+ * @param {string | null} exportPublicRootPath
+ * @param {string} relativePath
+ * @returns {string}
+ */
+function buildExportUrl(exportPublicRootPath, relativePath) {
+  const normalizedRelativePath = relativePath.startsWith("/") ? relativePath : `/${relativePath}`;
+  if (!exportPublicRootPath) {
+    return normalizedRelativePath;
+  }
+  return `${exportPublicRootPath}${normalizedRelativePath}`;
 }
 
 /**

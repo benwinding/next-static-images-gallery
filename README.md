@@ -37,6 +37,8 @@ module.exports = withStaticImagesGallery(nextConfig, {
   outputDir: "gallery/thumbs",
   // the generated thumbnail maximum width
   thumbnailWidth: 400,
+  // optional path prefix for exported urls (for deployments under subpaths)
+  exportPublicRootPath: "/customroot",
 });
 ```
 

@@ -13,6 +13,7 @@ module.exports = { withStaticImagesGallery };
  * @property {string} inputDir - The input directory for images.
  * @property {string} outputDir - The output directory for processed images.
  * @property {number} thumbnailWidth - The width of the thumbnail images.
+ * @property {string} [exportPublicRootPath] - Optional path prefix for exported URLs.
  */
 /**
  * Enhances the Next.js configuration with static images gallery functionality.
@@ -38,6 +39,7 @@ function withStaticImagesGallery(nextConfig, galleryOptions) {
           inputDir: galleryOptions.inputDir,
           outputDir: galleryOptions.outputDir,
           thumbnailWidth: galleryOptions.thumbnailWidth,
+          exportPublicRootPath: galleryOptions.exportPublicRootPath,
         }).catch(err => console.error(err));
       }
 
