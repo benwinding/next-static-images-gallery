@@ -36,16 +36,6 @@ jobs:
         npm pkg set version=$PUBLISHED_VERSION
     - name: Bump patch version
       run: npm version patch --no-git-tag-version
-    - name: Force OIDC (remove token-based auth)
-      run: |
-        echo "NODE_AUTH_TOKEN=" >> "$GITHUB_ENV"
-        echo "NPM_TOKEN=" >> "$GITHUB_ENV"
-        echo "NPM_AUTH_TOKEN=" >> "$GITHUB_ENV"
-        if [ -n "${NPM_CONFIG_USERCONFIG:-}" ] && [ -f "$NPM_CONFIG_USERCONFIG" ]; then
-          rm -f "$NPM_CONFIG_USERCONFIG"
-        fi
-        unset NPM_CONFIG_USERCONFIG
-        rm -f ~/.npmrc .npmrc || true
     - name: Publish to npm
       run: npm publish
       env:
