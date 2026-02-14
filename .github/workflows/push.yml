@@ -48,6 +48,7 @@ jobs:
         rm -f ~/.npmrc .npmrc || true
     - name: Publish to npm
       run: npm publish
+      env:
         NODE_AUTH_TOKEN: ""
         NPM_TOKEN: ""
         NPM_AUTH_TOKEN: ""
