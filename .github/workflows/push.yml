@@ -30,6 +30,17 @@ jobs:
       run: npm install
     - name: Build types
       run: npm run build
+    - name: Debug npm auth source
+      run: |
+        echo "NODE_AUTH_TOKEN is set? -> ${NODE_AUTH_TOKEN:+yes}"
+        echo "NPM_TOKEN is set? -> ${NPM_TOKEN:+yes}"
+        echo "NPM_AUTH_TOKEN is set? -> ${NPM_AUTH_TOKEN:+yes}"
+        echo "--- repo .npmrc ---"
+        test -f .npmrc && (ls -la .npmrc && sed -n '1,120p' .npmrc) || echo "(none)"
+        echo "--- home .npmrc ---"
+        test -f ~/.npmrc && (ls -la ~/.npmrc && sed -n '1,120p' ~/.npmrc) || echo "(none)"
+        echo "--- npm config authToken ---"
+        npm config get //registry.npmjs.org/:_authToken || true
     - name: Sync version from npm
       run: |
         PUBLISHED_VERSION=$(npm view next-static-images-gallery version)
