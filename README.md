@@ -47,7 +47,7 @@ module.exports = withStaticImagesGallery(nextConfig, {
 ``` jsx
 /**
  * ⚠️ Run next.js build first to remove the type errors below
- *   generated from next-static-images-gallery/src/plugin
+ *  generated from next-static-images-gallery/src/plugin
  */
 import { ImageGrid } from "next-static-images-gallery";
 import images from "../../../public/gallery/thumbs/gallery.json";
