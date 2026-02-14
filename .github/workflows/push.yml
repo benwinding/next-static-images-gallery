@@ -14,11 +14,9 @@ jobs:
       id-token: write
     steps:
     - uses: actions/checkout@v4
-    - name: Use Node.js 20.12.1
-      uses: actions/setup-node@v4
+    - uses: actions/setup-node@v6
       with:
-        node-version: 20.12.1
-        registry-url: https://registry.npmjs.org
+        node-version: 24
     - name: Cache node_modules
       id: cache-modules
       uses: actions/cache@v4
@@ -30,17 +28,6 @@ jobs:
       run: npm install
     - name: Build types
       run: npm run build
-    - name: Debug npm auth source
-      run: |
-        echo "NODE_AUTH_TOKEN is set? -> ${NODE_AUTH_TOKEN:+yes}"
-        echo "NPM_TOKEN is set? -> ${NPM_TOKEN:+yes}"
-        echo "NPM_AUTH_TOKEN is set? -> ${NPM_AUTH_TOKEN:+yes}"
-        echo "--- repo .npmrc ---"
-        test -f .npmrc && (ls -la .npmrc && sed -n '1,120p' .npmrc) || echo "(none)"
-        echo "--- home .npmrc ---"
-        test -f ~/.npmrc && (ls -la ~/.npmrc && sed -n '1,120p' ~/.npmrc) || echo "(none)"
-        echo "--- npm config authToken ---"
-        npm config get //registry.npmjs.org/:_authToken || true
     - name: Sync version from npm
       run: |
         PUBLISHED_VERSION=$(npm view next-static-images-gallery version)
